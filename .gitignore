@@ -1,0 +1,16 @@
+*.png
+*.pkl
+*.npz
+*.fits
+*.fits.gz
+*.h5
+*.hdf5
+*.tar.gz
+*.gz
+miniforge3/
+lib/
+bin/
+share/
+etc/
+include/
+.ipynb_checkpoints/

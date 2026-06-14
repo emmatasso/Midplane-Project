@@ -1,0 +1,95 @@
+J/A+A/699/A199      The Great Wave - Young giant sample          (Poggio+, 2025)
+================================================================================
+The Great Wave. Evidence of a large-scale vertical corrugation propagating
+outwards in the Galactic disc.
+    Poggio E., Khanna S., Drimmel R., Zari E., D'Onghia E., Lattanzi M.G.,
+    Palicio P.A., Recio-Blanco A., Thulasidharan L.
+    <Astron. Astrophys. 699, A199 (2025)>
+    =2025A&A...699A.199P        (SIMBAD/NED BibCode)
+================================================================================
+ADC_Keywords: Milky Way ; Stars, luminous ; Stars, giant ; Stars, distances ;
+              Proper motions ; Optical
+Keywords: Galaxy: disk - Galaxy: evolution - Galaxy: kinematics and dynamics -
+          Galaxy: stellar content - Galaxy: structure
+
+Abstract:
+    We analyse the three-dimensional structure and kinematics of two
+    samples of young stars in the Galactic disc, containing respectively
+    young giants (~17000 stars out to heliocentric distances of ~7kpc) and
+    classical Cepheids (~3400 stars out to heliocentric distances of
+    ~15kpc). The vertical structure of the two samples exhibit a
+    consistent shape of the Milky Way's warp, whose amplitude reaches
+    ~700pc at a Galactocentric radius R~14kpc. Moreover, both samples show
+    evidence of a large-scale vertical corrugation on top of the warp with
+    a vertical height of ~150-200pc, extending over a large portion of the
+    Galactic disc between Galactocentric radii R~10-12kpc in the third
+    Galactic quadrant (galactic longitudes 180{deg}<l<270{deg}) and
+    ~12-14kpc in the second Galactic quadrant (90{deg}<l<180{deg}). Its
+    total length is at least 10kpc and can possibly reach ~20kpc with the
+    Cepheid sample. The stars in the corrugation exhibit both radial and
+    vertical systematic motions, with Galactocentric radial velocities
+    towards the outer disc of about 10-15km/s. In the vertical motions,
+    once the warp signature is subtracted, the residuals show a
+    large-scale feature of systematically positive vertical velocities,
+    which is shifted to slightly larger Galactocentric radii with respect
+    to the spatial vertical corrugation (with a phase difference of
+    roughly {pi}/2), indicating an oscillatory behaviour. A comparison of
+    the observed shift with a simple toy model suggests that the
+    corrugation can be interpreted as a wave propagating towards the outer
+    disc. The wave mapped in this work is located at larger heliocentric
+    distances compared to the Radcliffe wave, a ~2.7kpc filament of dense
+    gas clouds close to the Sun, and exhibits a larger coverage of the
+    Galactic disc.
+
+Description:
+    Young giant sample described in the paper.
+    This dataset has been selected from the Gaia DR3 catalogue (Gaia
+    Collaboration, 2023A&A...674A...1G) with the specific objective to
+    study young populations in the Galactic disc using both spatial and
+    kinematic information.
+
+File Summary:
+--------------------------------------------------------------------------------
+ FileName      Lrecl  Records   Explanations
+--------------------------------------------------------------------------------
+ReadMe            80        .   This file
+catalog.dat       93    17030   Catalog
+--------------------------------------------------------------------------------
+
+See also:
+   I/355 : Gaia DR3 Part 1. Main source (Gaia Collaboration, 2022)
+
+Byte-by-byte Description of file: catalog.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label    Explanations
+--------------------------------------------------------------------------------
+   1- 19  I19   ---     GaiaDR3  Gaia DR3 source_id
+  21- 35 F15.11 deg     GLON     Galactic longitude
+  37- 51 F15.11 deg     GLAT     Galactic latitude
+  53- 57  F5.2  kpc     Dist     Distance (calculated as described in the paper)
+  59- 65  F7.5  kpc   e_Dist     Distance uncertainty (calculated as described
+                                  in the paper)
+  67- 74  F8.5  mas     PlxCor   Parallax from Gaia DR3 (after zero-point
+                                  correction, see details in the paper
+  76- 83  F8.4  mas   q_Dist     Zero-point corrected parallax divided by its
+                                  standard error (1)
+  85- 93  F9.6  mag     Gmag     G-band mean magnitude from Gaia DR3
+--------------------------------------------------------------------------------
+Note (1): This can be used as a reference value to quantify the reliability of
+  the distance estimate Dist. Sources with q_Dist>5 are usually considered
+  high-quality distance estimates.
+--------------------------------------------------------------------------------
+
+Acknowledgements:
+    Eloisa Poggio, poggio.eloisa(at)gmail.com
+
+References:
+    Vallenari et al., 2023A&A...674A...1G, Gaia Data Release 3:
+      Summary of the content and survey properties
+   Andrae et al.,     2023ApJS..267....8A, Robust Data-driven Metallicities for
+      175 Million Stars from Gaia XP Spectra
+   Skowron et al.,    arXiv:2406.09113, The Milky Way as seen by Classical
+      Cepheids I: distances based on mid-infrared photometry
+
+================================================================================
+(End)                                        Patricia Vannier [CDS]  05-May-2025
