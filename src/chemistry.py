@@ -26,6 +26,33 @@ def mgfe_dividing_line(feh_vals,
     return np.where(feh_vals >= fe_break, m1 * feh_vals + b1, m2 * feh_vals + b2)
 
 
+def apply_high_alpha_cut(table, x=None, y=None, z=None):
+    """
+    Apply the high-alpha cut to a selected table (no metallicity cut).
+    Optionally also apply the same mask to x, y, z arrays.
+    """
+    fe, mgfe = compute_fe_mgfe(table)
+    finite_alpha = np.isfinite(fe) & np.isfinite(mgfe)
+    fe0 = fe[finite_alpha]
+    mgfe0 = mgfe[finite_alpha]
+    mgfe_div0 = mgfe_dividing_line(fe0)
+    chem_cut_mask = (mgfe0 > mgfe_div0)
+    idx0 = np.where(finite_alpha)[0]
+    table_cut = table[idx0[chem_cut_mask]]
+    result = {
+        "table": table_cut,
+        "fe": fe0[chem_cut_mask],
+        "mgfe": mgfe0[chem_cut_mask],
+        "finite_alpha_mask": finite_alpha,
+        "chem_cut_mask": chem_cut_mask,
+    }
+    if x is not None and y is not None and z is not None:
+        x0, y0, z0 = x[finite_alpha], y[finite_alpha], z[finite_alpha]
+        result["x"] = x0[chem_cut_mask]
+        result["y"] = y0[chem_cut_mask]
+        result["z"] = z0[chem_cut_mask]
+    return result
+
 def apply_low_alpha_cut(table, x=None, y=None, z=None, feh_cut=FEH_CUT):
     """
     Apply the low-alpha + metallicity cut to a selected table.
