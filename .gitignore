@@ -20,3 +20,4 @@ include/
 *.fits
 StarFlow_summary_v1_0_0.fits
 *.csv
+*.csv
