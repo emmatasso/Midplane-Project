@@ -1,3 +1,5 @@
+data
+outputs
 *.png
 *.pkl
 *.npz
@@ -7,17 +9,9 @@
 *.hdf5
 *.tar.gz
 *.gz
-miniforge3/
-lib/
-bin/
-share/
-etc/
-include/
-.ipynb_checkpoints/
+__pycache__
+.ipynb_checkpoints
 *.pkl
-*.npz
 *.pdf
-*.fits
-StarFlow_summary_v1_0_0.fits
 *.csv
-*.csv
+.DS_Store
