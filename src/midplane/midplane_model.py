@@ -126,30 +126,8 @@ def model_z0(data):
     numpyro.sample("obs", dist.Mixture(mix, components), obs=data["tracer"])
 
 
-def model_h_eff(data):
-    """
-    Numpyro model used specifically for the h_eff (effective scale height)
-    calculation -- a separate fit from model_z0, not a shared posterior.
-
-    Differences from model_z0, arrived at during troubleshooting of h_eff
-    fits that were failing to reach the depth/width of the observed
-    [Mg/Fe]-vs-z trough:
-      - d_h2 ceiling loosened to 0.75 kpc (from 0.5). A narrower ceiling
-        forced h1 and h2 to sit too close together to jointly capture a
-        sharp central dip and broad wings; how far this needs to go is
-        data-dependent -- when tuning this against the observational
-        sample, ceilings from 0.5 up through 1.5 were tried, and the
-        posterior's behavior at the ceiling (does the 84th percentile of
-        d_h2 pile up against it?) was the diagnostic used to judge whether
-        it was still too tight. Re-run that same check on simulation data
-        before trusting 0.75 here.
-      - offset prior loosened to Normal(0.0, 0.2) (from Normal(0.05, 0.10)),
-        removing a mildly informative prior that could compete with the
-        amplitude parameters for how deep the trough is allowed to be.
-      - Q fixed at 0 (numpyro.deterministic, not sampled) -- the outlier
-        mixture is disabled entirely for this fit, rather than just
-        tightened.
-    """
+def model_z0(data):
+    """z0 model: same priors as the final APOGEE fits (d_h2 up to 0.75, offset ~ N(0, 0.2), Q = 0)."""
     _A1 = numpyro.sample("_A1", dist.HalfNormal(0.2))
     _A2 = numpyro.sample("_A2", dist.HalfNormal(0.2))
     A1 = numpyro.deterministic("A1", -_A1)
@@ -163,16 +141,7 @@ def model_h_eff(data):
     offset = numpyro.sample("offset", dist.Normal(0.0, 0.2))
 
     model_y = mixture_of_sech2(data["z"], A1, A2, h1, h2, z0) + offset
-
-    Q = numpyro.deterministic("Q", 0.0)
-    mix = dist.Categorical(probs=jnp.array([Q, 1.0 - Q]))
-    components = [
-        dist.Normal(0.0, jnp.sqrt(1.0 ** 2 + data["tracer_err"] ** 2)),
-        dist.Normal(model_y, data["tracer_err"]),
-    ]
-
-    numpyro.sample("obs", dist.Mixture(mix, components), obs=data["tracer"])
-
+    numpyro.sample("obs", dist.Normal(model_y, data["tracer_err"]), obs=data["tracer"])
 
 # =============================================================================
 # 2. Binning + single-cell fit
