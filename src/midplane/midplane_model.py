@@ -89,46 +89,46 @@ def mixture_of_sech2(z, A1, A2, h1, h2, z0):
     return A1 * (1 / jnp.cosh(dz / h1)) ** 2 + A2 * (1 / jnp.cosh(dz / h2)) ** 2
 
 
-def model_z0(data):
-    """
-    Numpyro model used to measure the midplane height z0. Two-component
-    sech^2 mixture with a sampled outlier-mixture likelihood, fit to binned
-    tracer-vs-z data. This is the canonical/first-settled version of the
-    model (narrower d_h2 ceiling, Q sampled rather than fixed).
+# def model_z0(data):
+#     """
+#     Numpyro model used to measure the midplane height z0. Two-component
+#     sech^2 mixture with a sampled outlier-mixture likelihood, fit to binned
+#     tracer-vs-z data. This is the canonical/first-settled version of the
+#     model (narrower d_h2 ceiling, Q sampled rather than fixed).
 
-      - h1 in [0.04, 1.0] kpc
-      - d_h2 in [0.04, 0.5] kpc -- the separation between h1 and h2
-      - Q (outlier fraction) ~ TruncatedNormal(0, 0.05, [0, 1.0]), sampled
-    Adjust freely; these are the values used for the observational z0 fit,
-    not universal constants.
-    """
-    _A1 = numpyro.sample("_A1", dist.HalfNormal(0.2))
-    _A2 = numpyro.sample("_A2", dist.HalfNormal(0.2))
-    A1 = numpyro.deterministic("A1", -_A1)
-    A2 = numpyro.deterministic("A2", -_A2)
+#       - h1 in [0.04, 1.0] kpc
+#       - d_h2 in [0.04, 0.5] kpc -- the separation between h1 and h2
+#       - Q (outlier fraction) ~ TruncatedNormal(0, 0.05, [0, 1.0]), sampled
+#     Adjust freely; these are the values used for the observational z0 fit,
+#     not universal constants.
+#     """
+#     _A1 = numpyro.sample("_A1", dist.HalfNormal(0.2))
+#     _A2 = numpyro.sample("_A2", dist.HalfNormal(0.2))
+#     A1 = numpyro.deterministic("A1", -_A1)
+#     A2 = numpyro.deterministic("A2", -_A2)
 
-    h1 = numpyro.sample("h1", dist.Uniform(0.04, 1.0))
-    d_h2 = numpyro.sample("d_h2", dist.Uniform(0.04, 0.5))
-    h2 = numpyro.deterministic("h2", h1 + d_h2)
+#     h1 = numpyro.sample("h1", dist.Uniform(0.04, 1.0))
+#     d_h2 = numpyro.sample("d_h2", dist.Uniform(0.04, 0.5))
+#     h2 = numpyro.deterministic("h2", h1 + d_h2)
 
-    z0 = numpyro.sample("z0", dist.Normal(0.0, 0.2))
-    offset = numpyro.sample("offset", dist.Normal(0.05, 0.10))
+#     z0 = numpyro.sample("z0", dist.Normal(0.0, 0.2))
+#     offset = numpyro.sample("offset", dist.Normal(0.05, 0.10))
 
-    model_y = mixture_of_sech2(data["z"], A1, A2, h1, h2, z0) + offset
+#     model_y = mixture_of_sech2(data["z"], A1, A2, h1, h2, z0) + offset
 
-    Q = numpyro.sample("Q", dist.TruncatedNormal(0.0, 0.05, low=0.0, high=1.0))
-    mix = dist.Categorical(probs=jnp.array([Q, 1.0 - Q]))
-    components = [
-        dist.Normal(0.0, jnp.sqrt(1.0 ** 2 + data["tracer_err"] ** 2)),
-        dist.Normal(model_y, data["tracer_err"]),
-    ]
+#     Q = numpyro.sample("Q", dist.TruncatedNormal(0.0, 0.05, low=0.0, high=1.0))
+#     mix = dist.Categorical(probs=jnp.array([Q, 1.0 - Q]))
+#     components = [
+#         dist.Normal(0.0, jnp.sqrt(1.0 ** 2 + data["tracer_err"] ** 2)),
+#         dist.Normal(model_y, data["tracer_err"]),
+#     ]
 
-    numpyro.sample("obs", dist.Mixture(mix, components), obs=data["tracer"])
+#     numpyro.sample("obs", dist.Mixture(mix, components), obs=data["tracer"])
 
 
 def model_z0(data):
     """z0 model: same priors as the final APOGEE fits (d_h2 up to 0.75, offset ~ N(0, 0.2), Q = 0)."""
-    _A1 = numpyro.sample("_A1", dist.HalfNormal(0.2))
+    _A1 = numpyro.sample("_A1", dist.HalfNormal(0.2)) 
     _A2 = numpyro.sample("_A2", dist.HalfNormal(0.2))
     A1 = numpyro.deterministic("A1", -_A1)
     A2 = numpyro.deterministic("A2", -_A2)
@@ -142,6 +142,24 @@ def model_z0(data):
 
     model_y = mixture_of_sech2(data["z"], A1, A2, h1, h2, z0) + offset
     numpyro.sample("obs", dist.Normal(model_y, data["tracer_err"]), obs=data["tracer"])
+
+def model_z0_2(data):
+    """z0 model: same priors as the final APOGEE fits (d_h2 up to 0.75, offset ~ N(0, 0.2), Q = 0)."""
+    _A1 = numpyro.sample("_A1", dist.HalfNormal(0.5)) 
+    _A2 = numpyro.sample("_A2", dist.HalfNormal(0.2))
+    A1 = numpyro.deterministic("A1", -_A1)
+    A2 = numpyro.deterministic("A2", -_A2)
+
+    h1 = numpyro.sample("h1", dist.Uniform(0.04, 1.0))
+    d_h2 = numpyro.sample("d_h2", dist.Uniform(0.04, .75)) #5
+    h2 = numpyro.deterministic("h2", h1 + d_h2)
+
+    z0 = numpyro.sample("z0", dist.Normal(0.0, 0.2))
+    offset = numpyro.sample("offset", dist.Normal(0.0, 0.2))
+
+    model_y = mixture_of_sech2(data["z"], A1, A2, h1, h2, z0) + offset
+    numpyro.sample("obs", dist.Normal(model_y, data["tracer_err"]), obs=data["tracer"])
+
 
 # =============================================================================
 # 2. Binning + single-cell fit

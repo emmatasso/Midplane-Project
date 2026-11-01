@@ -27,7 +27,7 @@ ROOT_PHI_EDGES = np.deg2rad(np.arange(120.0, 240.0 + 1e-3, 30.0))  # rad
 N_LEVELS = 2  # splits allowed below a root: 2 kpc x 30 deg -> 1 x 15 -> 0.5 x 7.5
 
 # (R [kpc], phi [deg]) inside the cells shown in the [Mg/Fe] vs z figure, either side of the Sun
-EXAMPLE_POINTS = [(14.0, 160.0), (8.0, 182.0)]
+EXAMPLE_POINTS = [(6.0, 160.0), (8.0, 182.0)]
 SUN_POINT = (8.25, 180.0)  # inside the Sun's cell (just inside R_sun = 8.275 kpc)
 
 
