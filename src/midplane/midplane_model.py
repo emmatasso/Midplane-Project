@@ -151,7 +151,7 @@ def model_z0_2(data):
     A2 = numpyro.deterministic("A2", -_A2)
 
     h1 = numpyro.sample("h1", dist.Uniform(0.04, 1.0))
-    d_h2 = numpyro.sample("d_h2", dist.Uniform(0.04, .75)) #5
+    d_h2 = numpyro.sample("d_h2", dist.Uniform(0.04, .75)) 
     h2 = numpyro.deterministic("h2", h1 + d_h2)
 
     z0 = numpyro.sample("z0", dist.Normal(0.0, 0.2))
